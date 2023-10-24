@@ -1,0 +1,76 @@
+Description: fix for rollup 3
+Author: Yadd <yadd@debian.org>
+Bug-Debian: https://bugs.debian.org/1022675
+Forwarded: not-needed
+Last-Update: 2022-10-27
+
+--- a/package.json
++++ b/package.json
+@@ -3,8 +3,8 @@
+   "version": "0.34.1",
+   "description": "Seamless integration between Rollup and TypeScript. Now with errors.",
+   "main": "dist/rollup-plugin-typescript2.cjs.js",
+-  "module": "dist/rollup-plugin-typescript2.es.js",
+-  "jsnext:main": "dist/rollup-plugin-typescript2.es.js",
++  "module": "dist/rollup-plugin-typescript2.es.mjs",
++  "jsnext:main": "dist/rollup-plugin-typescript2.es.mjs",
+   "types": "dist/index.d.ts",
+   "files": [
+     "dist"
+--- a/rollup.config.base.js
++++ b/rollup.config.base.js
+@@ -1,10 +1,10 @@
+-import resolve from "@rollup/plugin-node-resolve";
+-import commonjs from "@rollup/plugin-commonjs";
+-import replace from "@rollup/plugin-replace";
++const resolve = require("@rollup/plugin-node-resolve").nodeResolve;
++const commonjs = require("@rollup/plugin-commonjs");
++const replace = require("@rollup/plugin-replace");
+ 
+ const pkg = require("./package.json");
+ 
+-export default {
++module.exports = {
+ 	input: "src/index.ts",
+ 
+ 	external: [
+@@ -54,6 +54,13 @@
+ 			sourcemap: true,
+ 			banner: "/* eslint-disable */",
+ 			exports: "auto",
++		},
++		{
++			format: "cjs",
++			file: "build-self/" + pkg.main,
++			sourcemap: true,
++			banner: "/* eslint-disable */",
++			exports: "auto",
+ 		},
+ 		{
+ 			format: "es",
+--- a/rollup.config.js
++++ b/rollup.config.js
+@@ -1,7 +1,7 @@
+-import ts from "@rollup/plugin-typescript";
++const ts = require("@rollup/plugin-typescript");
+ 
+-import config from "./rollup.config.base";
++const config = require("./rollup.config.base");
+ 
+ config.plugins.push(ts());
+ 
+-export default config;
++module.exports = config;
+--- a/rollup.config.self.js
++++ b/rollup.config.self.js
+@@ -1,7 +1,7 @@
+-import ts from "./build-self/dist/rollup-plugin-typescript2.es";
++const ts = require("./build-self/dist/rollup-plugin-typescript2.cjs");
+ 
+-import config from "./rollup.config.base";
++const config = require("./rollup.config.base");
+ 
+ config.plugins.push(ts({ verbosity: 2, abortOnError: false, clean: false }));
+ 
+-export default config;
++module.exports = config;

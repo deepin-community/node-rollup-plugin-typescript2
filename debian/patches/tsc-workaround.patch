@@ -1,0 +1,76 @@
+Description: some ts workarounds
+Author: Yadd <yadd@debian.org>
+Forwarded: not-needed
+Last-Update: 2022-12-04
+
+--- a/__tests__/integration/helpers.ts
++++ b/__tests__/integration/helpers.ts
+@@ -40,6 +40,7 @@
+   const { output: files } = esm;
+   for (const file of files) {
+     if ("isAsset" in file) {
++// @ts-ignore
+       const optIsAsset = file as Partial<Pick<OutputAsset, "isAsset">> & Omit<OutputAsset, "isAsset">;
+       delete optIsAsset["isAsset"];
+     }
+--- a/src/index.ts
++++ b/src/index.ts
+@@ -4,7 +4,7 @@
+ import { normalizePath as normalize } from "@rollup/pluginutils";
+ import { blue, red, yellow, green } from "colors/safe";
+ import { satisfies } from "semver";
+-import findCacheDir from "find-cache-dir";
++const findCacheDir = require("find-cache-dir");
+ 
+ import { RollupContext, VerbosityLevel } from "./context";
+ import { LanguageServiceHost } from "./host";
+--- a/src/tscache.ts
++++ b/src/tscache.ts
+@@ -1,8 +1,8 @@
+ import * as tsTypes from "typescript";
+ import * as fs from "fs-extra";
+ import * as _ from "lodash";
+-import { Graph, alg } from "graphlib";
+-import objHash from "object-hash";
++const { Graph, alg } = require('graphlib');
++const objHash = require("object-hash");
+ import { blue, yellow, green } from "colors/safe";
+ 
+ import { RollupContext } from "./context";
+@@ -68,7 +68,7 @@
+ {
+ 	private cacheVersion = "9";
+ 	private cachePrefix = "rpt2_";
+-	private dependencyTree: Graph;
++	private dependencyTree: typeof Graph;
+ 	private ambientTypes!: ITypeSnapshot[];
+ 	private ambientTypesDirty = false;
+ 	private cacheDir!: string;
+@@ -98,6 +98,7 @@
+ 				rollupConfig: this.rollupConfig,
+ 				tsVersion: tsModule.version,
+ 			},
++// @ts-ignore
+ 			this.hashOptions,
+ 		)}`;
+ 
+@@ -155,9 +156,11 @@
+ 	public walkTree(cb: (id: string) => void | false): void
+ 	{
+ 		if (alg.isAcyclic(this.dependencyTree))
++// @ts-ignore
+ 			return alg.topsort(this.dependencyTree).forEach(id => cb(id));
+ 
+ 		this.context.info(yellow("import tree has cycles"));
++// @ts-ignore
+ 		this.dependencyTree.nodes().forEach(id => cb(id));
+ 	}
+ 
+@@ -293,6 +296,7 @@
+ 	private createHash(id: string, snapshot: tsTypes.IScriptSnapshot)
+ 	{
+ 		const data = snapshot.getText(0, snapshot.getLength());
++// @ts-ignore
+ 		return objHash({ data, id }, this.hashOptions);
+ 	}
+ }

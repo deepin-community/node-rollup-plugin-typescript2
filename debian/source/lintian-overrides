@@ -1,0 +1,5 @@
+# Match types-*/*
+add-component-copyright types-object-hash *
+
+# Doc
+very-long-line-length-in-source-file *.md*

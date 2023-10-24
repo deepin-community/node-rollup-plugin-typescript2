@@ -1,0 +1,6 @@
+#!/bin/sh
+
+patch -p1 -R <debian/patches/use-node-rollup-plugin-typescript
+pkgjs-utils link_external_modules
+pkgjs-ln rollup-plugin-typescript2
+sh -ex debian/nodejs/build

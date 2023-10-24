@@ -1,0 +1,12 @@
+/node_modules
+/npm-debug.log
+/typings
+/.vscode
+/.idea
+/build-self
+/build
+.rpt2_cache
+*.swp
+*.swo
+coverage
+__temp
