@@ -1,0 +1,7 @@
+update-rollup-config.patch
+tsc-workaround.patch
+use-node-rollup-plugin-typescript
+fix-for-rollup-3.patch
+dont-try-to-access-to-__proto__.patch
+dont-check-versions.patch
+increase-test-timeout.patch

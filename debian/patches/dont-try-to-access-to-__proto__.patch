@@ -1,0 +1,16 @@
+Description: don't try to access to __proto__
+Author: Yadd <yadd@debian.org>
+Forwarded: no
+Last-Update: 2022-12-04
+
+--- a/object-hash/index.js
++++ b/object-hash/index.js
+@@ -247,7 +247,7 @@
+         return keys.forEach(function(key){
+           self.dispatch(key);
+           write(':');
+-          if(!options.excludeValues) {
++          if(!options.excludeValues && key != '__proto__') {
+             self.dispatch(object[key]);
+           }
+           write(',');

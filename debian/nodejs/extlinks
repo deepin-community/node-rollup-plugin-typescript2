@@ -1,0 +1,11 @@
+jest-mock	test
+@jest/globals	test
+@rollup/pluginutils
+rollup
+tslib
+ts-jest		test
+typescript
+@types/fs-extra
+@types/lodash
+@types/resolve
+@types/semver

@@ -1,0 +1,3 @@
+Tests: rebuild-itself
+Depends: @, @builddeps@
+Restrictions: allow-stderr

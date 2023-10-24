@@ -1,0 +1,20 @@
+Description: build with @rollup/plugin-typescript
+ This avoids a circular build dependency to itself
+ .
+ Note that build has 2 steps, second is done with the first build result
+Author: Yadd <yadd@debian.org>
+Forwarded: not-needed
+Last-Update: 2022-07-01
+
+--- a/rollup.config.js
++++ b/rollup.config.js
+@@ -1,7 +1,7 @@
+-import ts from "rollup-plugin-typescript2";
++import ts from "@rollup/plugin-typescript";
+ 
+ import config from "./rollup.config.base";
+ 
+-config.plugins.push(ts({ verbosity: 2, abortOnError: false }));
++config.plugins.push(ts());
+ 
+ export default config;

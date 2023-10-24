@@ -1,0 +1,1 @@
+jest --ci --testPathIgnorePatterns __tests__/integration/watch.spec.ts .pc --testTimeout 300000

@@ -1,0 +1,22 @@
+{
+	"extends": "./tsconfig.base",
+	"compilerOptions": {
+		"target": "es6",
+		"module": "ES2020",
+		"sourceMap": true,
+		"noUnusedParameters": true,
+		"noUnusedLocals": true,
+		"diagnostics": true,
+		"listFiles": true,
+		"moduleResolution": "node",
+		"forceConsistentCasingInFileNames": true,
+		"noImplicitReturns": true,
+		"strict": true,
+		"outDir": "./build",
+		"allowSyntheticDefaultImports": true
+	},
+	"include": [
+		"src/**/*.ts"
+	],
+	"exclude": []
+}

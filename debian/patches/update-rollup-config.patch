@@ -1,0 +1,34 @@
+Description: fix rollup config to use Debian libs
+Author: Yadd <yadd@debian.org>
+Forwarded: not-needed
+Last-Update: 2022-12-04
+
+--- a/rollup.config.base.js
++++ b/rollup.config.base.js
+@@ -1,6 +1,6 @@
+ import resolve from "@rollup/plugin-node-resolve";
+ import commonjs from "@rollup/plugin-commonjs";
+-import replace from "rollup-plugin-re";
++import replace from "@rollup/plugin-replace";
+ 
+ const pkg = require("./package.json");
+ 
+@@ -36,7 +36,7 @@
+ 		resolve({ jsnext: true, preferBuiltins: true, }),
+ 		commonjs
+ 		({
+-			include: "node_modules/**",
++			include: ["node_modules/**", 'graphlib", "object-hash'],
+ 		}),
+ 	],
+ 
+--- a/tsconfig.json
++++ b/tsconfig.json
+@@ -9,6 +9,7 @@
+ 		"diagnostics": true,
+ 		"listFiles": true,
+ 		"moduleResolution": "node",
++		"noEmitOnError": true,
+ 		"forceConsistentCasingInFileNames": true,
+ 		"noImplicitReturns": true,
+ 		"strict": true,
